@@ -4,25 +4,14 @@ namespace SET09102_SoftwareEngineering_CW.bdo
 {
     public class RawMessage
     {
-        private String header;
-        private String body;
-
-        public RawMessage(string header, string body)
+        public RawMessage(string header, string messageBody)
         {
-            this.header = header;
-            this.body = body;
+            Header = header;
+            MessageBody = messageBody;
         }
 
-        public string Header
-        {
-            get => header;
-            set => header = value;
-        }
+        public string Header { get; set; }
 
-        public string Body
-        {
-            get => body;
-            set => body = value;
-        }
+        public string MessageBody { get; set; }
     }
 }

@@ -4,23 +4,43 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SET09102_SoftwareEngineering_CW"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="MainWindow" Height="552" Width="944">
+
     <Grid HorizontalAlignment="Left" Width="934" Height="419" VerticalAlignment="Top">
-        <TextBox x:Name="InputTextHeader" HorizontalAlignment="Left" Height="160" Margin="23,80,0,0" TextWrapping="Wrap" Text="Body" VerticalAlignment="Top" Width="432"/>
-        <TextBox x:Name="InputTextBody" HorizontalAlignment="Left" Height="23" Margin="23,52,0,0" TextWrapping="Wrap" Text="Header" VerticalAlignment="Top" Width="432"/>
-        <Label Content="Message" HorizontalAlignment="Left" Margin="23,21,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="210" Margin="23,295,0,-86" TextWrapping="Wrap" VerticalAlignment="Top" Width="432" IsReadOnly="True"/>
-        <Button Content="Upload file" HorizontalAlignment="Left" Margin="380,27,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0,0.25"/>
-        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="484" Margin="475,21,0,-86" Stroke="Black" VerticalAlignment="Top" Width="445"/>
-        <ListBox HorizontalAlignment="Left" Height="443" Margin="490,52,0,-76" VerticalAlignment="Top" Width="135"/>
-        <ListBox HorizontalAlignment="Left" Height="443" Margin="630,52,0,-76" VerticalAlignment="Top" Width="135"/>
-        <ListBox HorizontalAlignment="Left" Margin="770,52,0,-76" Width="135"/>
-        <Label Content="Result" HorizontalAlignment="Left" Margin="23,264,0,0" VerticalAlignment="Top"/>
-        <Label Content="Trending" HorizontalAlignment="Left" Margin="490,26,0,0" VerticalAlignment="Top"/>
-        <Label Content="Mentions" HorizontalAlignment="Left" Margin="630,27,0,0" VerticalAlignment="Top"/>
-        <Label Content="SIR" HorizontalAlignment="Left" Margin="770,27,0,0" VerticalAlignment="Top"/>
-        <Button Content="Submit" HorizontalAlignment="Left" Margin="380,245,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <TextBox x:Name="InputTextBody" HorizontalAlignment="Left" Height="160" Margin="23,80,0,0" TextWrapping="Wrap"
+                 Text="Body" VerticalAlignment="Top" Width="432" AcceptsTab="True" AcceptsReturn="True" />
+        <TextBox x:Name="InputTextHeader" HorizontalAlignment="Left" Height="23" Margin="23,52,0,0" TextWrapping="Wrap"
+                 Text="Header" VerticalAlignment="Top" Width="432" />
+        <Label Content="Message" HorizontalAlignment="Left" Margin="23,21,0,0" VerticalAlignment="Top" />
+        <TextBox x:Name="ResultBox" HorizontalAlignment="Left" Height="202" Margin="23,303,0,-86" TextWrapping="Wrap"
+                 VerticalAlignment="Top" Width="432" IsReadOnly="True" />
+        <Button x:Name="UploadFileBtn" Content="Upload file" HorizontalAlignment="Left" Margin="380,27,0,0"
+                VerticalAlignment="Top" Width="75" RenderTransformOrigin="0,0.25" Click="UploadFileBtn_Click" />
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="484" Margin="475,21,0,-86" Stroke="Black"
+                   VerticalAlignment="Top" Width="445" />
+        <ListBox x:Name="TrendingList" HorizontalAlignment="Left" Height="443" Margin="490,52,0,-76"
+                 VerticalAlignment="Top" Width="135">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding HashTag}" />
+                        <TextBlock Text="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox x:Name="MentionList" HorizontalAlignment="Left" Height="443" Margin="630,52,0,-76"
+                 VerticalAlignment="Top" Width="135" />
+        <ListBox x:Name="SirListBox" HorizontalAlignment="Left" Margin="770,52,0,-76" Width="135" />
+        <Label Content="Result" HorizontalAlignment="Left" Margin="23,277,0,0" VerticalAlignment="Top" />
+        <Label Content="Trending" HorizontalAlignment="Left" Margin="490,26,0,0" VerticalAlignment="Top" />
+        <Label Content="Mentions" HorizontalAlignment="Left" Margin="630,27,0,0" VerticalAlignment="Top" />
+        <Label Content="SIR" HorizontalAlignment="Left" Margin="770,27,0,0" VerticalAlignment="Top" />
+        <Button x:Name="SubmitBtn" Content="Submit" HorizontalAlignment="Left" Margin="380,245,0,0"
+                VerticalAlignment="Top" Width="75" Click="SubmitBtn_Click" />
+        <Separator HorizontalAlignment="Left" Height="12" Margin="10,265,0,0" VerticalAlignment="Top" Width="455" />
 
 
     </Grid>

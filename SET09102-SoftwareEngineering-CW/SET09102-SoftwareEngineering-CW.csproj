@@ -58,10 +58,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="bdo\SIRMessage.cs" />
+    <Compile Include="bdo\Message.cs" />
+    <Compile Include="bdo\ObservableCollection.cs" />
+    <Compile Include="bdo\SirList.cs" />
     <Compile Include="bdo\SMSMessage.cs" />
-    <Compile Include="bdo\StandardEmailMessage.cs" />
+    <Compile Include="bdo\EmailMessage.cs" />
+    <Compile Include="bdo\TrendingList.cs" />
     <Compile Include="bdo\TweetMessage.cs" />
+    <Compile Include="ProcessingResult.xaml.cs">
+      <DependentUpon>ProcessingResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="util\InputException.cs" />
     <Compile Include="service\BasicDataProvider.cs" />
     <Compile Include="service\MessageProcessor.cs" />
     <Page Include="MainWindow.xaml">
@@ -77,6 +84,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProcessingResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
