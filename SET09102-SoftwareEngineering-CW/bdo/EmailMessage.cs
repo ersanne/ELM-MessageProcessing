@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using SET09102_SoftwareEngineering_CW.exceptions;
 
 namespace SET09102_SoftwareEngineering_CW.bdo
@@ -98,7 +98,6 @@ namespace SET09102_SoftwareEngineering_CW.bdo
             get => base.MessageText;
             set
             {
-                
                 //Check that MessageText exists
                 if (string.IsNullOrEmpty(value))
                 {
@@ -147,7 +146,7 @@ namespace SET09102_SoftwareEngineering_CW.bdo
                     "Theft of Properties", "Staff Attack", "Device Damage", "Raid", "Customer Attack", "Staff Abuse",
                     "Bomb Threat", "Terrorism", "Suspicious Incident", "Sport Injury", "Personal Info Leak"
                 };
-                
+
                 //If type is not in list throw error
                 if (!list.Contains(value))
                 {
@@ -161,18 +160,8 @@ namespace SET09102_SoftwareEngineering_CW.bdo
 
         private static bool IsValidEmail(string email)
         {
-            try
-            {
-                //Create email address with string
-                var addr = new System.Net.Mail.MailAddress(email);
-                //If object and string are equal email is valid
-                return addr.Address == email;
-            }
-            catch
-            {
-                //Email is not valid
-                return false;
-            }
+            //Validate email
+            return new EmailAddressAttribute().IsValid(email);
         }
 
         private static bool IsValidSportCentreCode(string code)

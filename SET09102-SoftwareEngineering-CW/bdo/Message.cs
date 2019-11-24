@@ -19,6 +19,8 @@ namespace SET09102_SoftwareEngineering_CW.bdo
                 throw new InputException(
                     "Message header length is not valid, please make sure your id is correct.");
             }
+
+            Id = rawMessage.Header;
         }
 
         [JsonProperty("id")]
