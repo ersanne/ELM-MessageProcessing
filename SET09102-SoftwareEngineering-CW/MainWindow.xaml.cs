@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using SET09102_SoftwareEngineering_CW.bdo;
 using SET09102_SoftwareEngineering_CW.exceptions;
 using SET09102_SoftwareEngineering_CW.service;
@@ -23,7 +24,7 @@ namespace SET09102_SoftwareEngineering_CW
 
             //Set ItemsSource for ListBoxes
             TrendingList.ItemsSource = basicDataProvider.TrendingList;
-            TrendingList.Items.SortDescriptions.Add(new SortDescription("Count", ListSortDirection.Descending));
+            //TrendingList.Items.SortDescriptions.Add(new SortDescription("Count", ListSortDirection.Descending));
             MentionList.ItemsSource = basicDataProvider.MentionList;
             SirList.ItemsSource = basicDataProvider.SirList;
             QuarantineList.ItemsSource = basicDataProvider.QuarantineList;
@@ -82,6 +83,7 @@ namespace SET09102_SoftwareEngineering_CW
 
         private void SubmitBtn_Click(object sender, RoutedEventArgs e)
         {
+            //Process text from text boxes and output to result textbox
             ResultBox.Text = ProcessMessage(new RawMessage(InputTextHeader.Text, InputTextBody.Text));
         }
 
@@ -89,16 +91,20 @@ namespace SET09102_SoftwareEngineering_CW
         {
             try
             {
-                return MessageProcessor.GetInstance().ProcessMessage(message);
+                //Process Message
+                return MessageProcessor.GetInstance().ProcessMessageIndentedJson(message);
             }
             catch (InputException except)
             {
+                //If InputException thrown open show dialog with error message
                 MessageBox.Show(except.Message, "Error parsing Input");
             }
-//            catch (Exception except)
-//            {
-//                MessageBox.Show(except.Message, "Error");
-//            }
+            catch (Exception except)
+            {
+                //If Exception thrown open show dialog with error message
+                MessageBox.Show(except.Message, "Error");
+            }
+            //Should never reach this point but return null if it does.
             return null;
         }
     }

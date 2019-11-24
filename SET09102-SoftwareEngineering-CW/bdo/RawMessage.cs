@@ -2,6 +2,9 @@
 
 namespace SET09102_SoftwareEngineering_CW.bdo
 {
+    /// <summary>
+    /// Raw message with Header and MessageBody
+    /// </summary>
     public class RawMessage
     {
         public RawMessage(string header, string messageBody)
@@ -10,7 +13,7 @@ namespace SET09102_SoftwareEngineering_CW.bdo
             MessageBody = messageBody;
         }
 
-        public string Header { get; set; }
+        public string Header { get; }
 
         public string MessageBody { get; set; }
     }

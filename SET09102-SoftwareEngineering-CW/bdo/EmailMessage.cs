@@ -7,6 +7,9 @@ using SET09102_SoftwareEngineering_CW.exceptions;
 
 namespace SET09102_SoftwareEngineering_CW.bdo
 {
+    /// <summary>
+    /// Email inherits message and adds Subject, SportCentreCode and IncidentType
+    /// </summary>
     public class EmailMessage : Message
     {
         private string _subject;
@@ -15,23 +18,24 @@ namespace SET09102_SoftwareEngineering_CW.bdo
 
         public EmailMessage(RawMessage rawMessage) : base(rawMessage)
         {
+            //Split message body into lines
             var lines = rawMessage.MessageBody.Split(new string[] {Environment.NewLine},
                 StringSplitOptions.RemoveEmptyEntries);
 
-            Sender = lines[0].Trim();
-            Subject = lines[1].Trim();
+            Sender = lines[0].Trim(); //First line should be sender
+            Subject = lines[1].Trim(); //Second line should be subject
 
-            var i = 3;
-            if (IsSir)
+            var i = 3; //Set line index for concatenating message body lines
+            if (IsSir) //Subject will set SIR property to true if SIR detected
             {
-                SportCentreCode = lines[2].Trim();
-                IncidentType = lines[3].Trim();
-                IsSir = true;
-                i = 5;
+                SportCentreCode = lines[2].Trim(); //Third line should be sport centre code
+                IncidentType = lines[3].Trim(); //Fourth lines should be incident type
+                i = 5; //Override line index for concatenating message body lines
             }
 
-            this.MessageText =
-                $"{MessageText}{lines[i - 1].Trim()}"; //Add first item without space to avoid extra space
+            //Add first item without space to avoid extra space
+            this.MessageText = $"{MessageText}{lines[i - 1].Trim()}";
+            //Add remaining items with space
             for (; i < lines.Length; i++)
             {
                 MessageText = $"{MessageText} {lines[i].Trim()}";
@@ -44,6 +48,7 @@ namespace SET09102_SoftwareEngineering_CW.bdo
             get => base.Sender;
             set
             {
+                //Validate that sender is an email address
                 if (!IsValidEmail(value))
                 {
                     throw new InputException("Sender must be a valid email address.");
@@ -59,24 +64,28 @@ namespace SET09102_SoftwareEngineering_CW.bdo
             get => _subject;
             set
             {
+                //Check that subject exists
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new InputException("Could not find subject line, please make sure your email has a subject.");
                 }
 
+                //Check that subject is no more than 20 characters
                 if (value.Length > 20)
                 {
                     throw new InputException("Subject cannot be longer than 20 characters.");
                 }
 
+                //Check if message is SIR
                 if (value.StartsWith("SIR"))
                 {
+                    //If message is SIR check that subject is valid (i.e. date is correct)
                     if (!IsValidSirSubject(value))
                     {
                         throw new InputException("Message detected as SIR but could not validate date in subject.");
                     }
 
-                    IsSir = true;
+                    IsSir = true; //Set IsSir to true
                 }
 
                 _subject = value;
@@ -89,21 +98,25 @@ namespace SET09102_SoftwareEngineering_CW.bdo
             get => base.MessageText;
             set
             {
+                
+                //Check that MessageText exists
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new InputException("The message text cannot be empty.");
                 }
 
+                //Check that MessageText is no more than 1028 characters
                 if (value.Length > 1028)
                 {
                     throw new InputException("Email message text cannot be longer than 1028 characters.");
                 }
-                
+
                 base.MessageText = value;
             }
         }
 
-        [JsonIgnore] public bool IsSir { get; set; } = false;
+        //Identifier if message is SIR, ignored in JSON
+        [JsonIgnore] public bool IsSir { get; private set; }
 
         [JsonProperty("sportCentreCode")]
         public string SportCentreCode
@@ -111,6 +124,7 @@ namespace SET09102_SoftwareEngineering_CW.bdo
             get => _sportCentreCode;
             set
             {
+                //Check that SportCentreCode is valid (xx-xxx-xx)
                 if (!IsValidSportCentreCode(value))
                 {
                     throw new InputException("Sport Centre Code: \"" + value +
@@ -127,11 +141,14 @@ namespace SET09102_SoftwareEngineering_CW.bdo
             get => _incidentType;
             set
             {
+                //List of valid incident types
                 var list = new List<string>
                 {
                     "Theft of Properties", "Staff Attack", "Device Damage", "Raid", "Customer Attack", "Staff Abuse",
                     "Bomb Threat", "Terrorism", "Suspicious Incident", "Sport Injury", "Personal Info Leak"
                 };
+                
+                //If type is not in list throw error
                 if (!list.Contains(value))
                 {
                     throw new InputException("Nature of Incident \"" + value +
@@ -146,11 +163,14 @@ namespace SET09102_SoftwareEngineering_CW.bdo
         {
             try
             {
+                //Create email address with string
                 var addr = new System.Net.Mail.MailAddress(email);
+                //If object and string are equal email is valid
                 return addr.Address == email;
             }
             catch
             {
+                //Email is not valid
                 return false;
             }
         }
@@ -159,10 +179,13 @@ namespace SET09102_SoftwareEngineering_CW.bdo
         {
             try
             {
+                //Check if regex matches code (checks for xx-xxx-xx, numeric only)
+                //If regex doesn't match exception will be thrown
                 return Regex.Match(code, @"\d{2}-\d{3}-\w{2}\b").Success;
             }
             catch
             {
+                //Code is not valid
                 return false;
             }
         }
@@ -171,10 +194,14 @@ namespace SET09102_SoftwareEngineering_CW.bdo
         {
             try
             {
-                return Regex.Match(subject.Substring(4,10), @"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$").Success;
+                //Check if regex matches subject (checks for dd/mm/yyyy)
+                //If regex doesn't match exception will be thrown
+                return Regex.Match(subject.Substring(4, 10),
+                    @"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$").Success;
             }
             catch
             {
+                //Date is invalid
                 return false;
             }
         }

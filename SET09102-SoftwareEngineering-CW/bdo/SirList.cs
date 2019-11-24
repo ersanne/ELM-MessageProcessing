@@ -3,6 +3,9 @@ using System.ComponentModel;
 
 namespace SET09102_SoftwareEngineering_CW.bdo
 {
+    /// <summary>
+    /// Custom ObservableCollection for SIR items
+    /// </summary>
     public class SirList : ObservableCollection<SirItem>
     {
         public SirList() : base()
@@ -18,10 +21,13 @@ namespace SET09102_SoftwareEngineering_CW.bdo
         }
     }
 
+    /// <summary>
+    /// Custom SIR item for lsit
+    /// </summary>
     public class SirItem
     {
-        public string SportCenterCode { get; set; }
-        public string IncidentType { get; set; }
+        private string SportCenterCode { get; }
+        private string IncidentType { get; }
 
         public SirItem(string sportCenterCode, string incidentType)
         {

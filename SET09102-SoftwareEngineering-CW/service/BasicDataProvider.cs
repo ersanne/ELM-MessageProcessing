@@ -5,15 +5,22 @@ using System.IO;
 using System.Linq;
 using System.Windows.Documents;
 using SET09102_SoftwareEngineering_CW.bdo;
+using SET09102_SoftwareEngineering_CW.exceptions;
 
 namespace SET09102_SoftwareEngineering_CW.service
 {
+    /// <summary>
+    /// Singleton class to provide various data
+    /// This class contains the textspeak words as well the various lists,
+    /// outside the prototype this should be persisted properly.
+    /// </summary>
     public class BasicDataProvider
     {
         private static BasicDataProvider _instance;
 
         private BasicDataProvider()
         {
+            //Read textspeak file when initialising class 
             ReadTextSpeakFile();
         }
 
@@ -22,40 +29,50 @@ namespace SET09102_SoftwareEngineering_CW.service
             return _instance ?? (_instance = new BasicDataProvider());
         }
 
-        public Dictionary<string, string> TextSpeakWords { get; set; }
+        //Dictionary containing textspeak words. <Short, Expanded> i.e. <LOL, Laughing out loud>
+        public Dictionary<string, string> TextSpeakWords { get; private set; }
 
-        public TrendingList TrendingList { get; set; } = new TrendingList();
+        //Custom ObservableCollection for trending hashtags
+        public TrendingList TrendingList { get; } = new TrendingList();
 
+        //ObservableCollection for mentions
         public ObservableCollection<string> MentionList { get; } = new ObservableCollection<string>();
 
+        //Custom ObservableCollection for SIR items
         public SirList SirList { get; set; } = new SirList();
-        
+
+        //ObservableCollection for quarantined urls
         public ObservableCollection<string> QuarantineList { get; set; } = new ObservableCollection<string>();
-        
-        public void AddOrIncrementTrendingListItem(string item)
-        {
-            if (TrendingList.Any(elem => elem.HashTag.Equals(item)))
-            {
-                TrendingList.Single(elem => elem.HashTag.Equals(item)).Count += 1;
-            }
-            else
-            {
-                TrendingList.Add(new TrendingItem(item, 1));
-            }
 
-            TrendingList.Sort(o => o.Count);
-        }
-
+        //Read textspeak file
         private void ReadTextSpeakFile()
         {
-            TextSpeakWords = new Dictionary<string, string>();
-            var reader =
-                //new StreamReader(File.OpenRead(Path.Combine(Environment.CurrentDirectory, @"Data\", "textwords.csv")));
-                new StreamReader(File.OpenRead(@"../../Data/textwords.csv"));
+            TextSpeakWords = new Dictionary<string, string>(); //Create dictionary for textspeak words 
+            
+            StreamReader reader = null;
+            //Try reading file from current directory or project directory
+            if (File.Exists(Path.Combine(Environment.CurrentDirectory, @"Data\", "textwords.csv")))
+            {
+                reader = new StreamReader(File.OpenRead(Path.Combine(Environment.CurrentDirectory, @"Data\",
+                    "textwords.csv")));
+            }
+            else if (File.Exists(@"../../Data/textwords.csv"))
+            {
+                reader = new StreamReader(File.OpenRead(@"../../Data/textwords.csv"));
+            }
+
+            //If file not found throw exception
+            if (reader == null)
+            {
+                throw new FileNotFoundException(
+                    "Could not locate textspeak file. Please ensure it exists in the same directory as the program and is called textwords.csv");
+            }
+
+            //Read the file
             while (!reader.EndOfStream)
             {
                 var parts = reader.ReadLine()?.Split(',');
-                TextSpeakWords.Add(parts[0], parts[1]);
+                if (parts != null) TextSpeakWords.Add(parts[0], parts[1]);
             }
         }
     }

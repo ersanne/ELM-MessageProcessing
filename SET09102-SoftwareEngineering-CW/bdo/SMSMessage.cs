@@ -5,14 +5,21 @@ using SET09102_SoftwareEngineering_CW.exceptions;
 
 namespace SET09102_SoftwareEngineering_CW.bdo
 {
+    /// <summary>
+    /// SMS inherits message and customizes verification
+    /// </summary>
     public class SMSMessage : Message
     {
         public SMSMessage(RawMessage rawMessage) : base(rawMessage)
         {
+            //Find end of first line to avoid splitting whole text by lines
             var endOfFirstLine = rawMessage.MessageBody.IndexOf("\n", StringComparison.Ordinal);
-            Sender = rawMessage.MessageBody.Substring(0, endOfFirstLine - 1); //Phone number cant be longer than 15 characters
-            var body = rawMessage.MessageBody.Substring(endOfFirstLine + 1);
-            MessageText = body;
+
+            //Get sender line and set property
+            Sender = rawMessage.MessageBody.Substring(0, endOfFirstLine - 1);
+
+            //Set MessageText
+            MessageText = rawMessage.MessageBody.Substring(endOfFirstLine + 1);
         }
 
         [JsonProperty("sender")]
@@ -21,6 +28,7 @@ namespace SET09102_SoftwareEngineering_CW.bdo
             get => base.Sender;
             set
             {
+                //Verify that sender is a valid international phone number
                 if (!IsPhoneNumber(value))
                 {
                     throw new InputException("Phone number \"" + value +
@@ -37,11 +45,13 @@ namespace SET09102_SoftwareEngineering_CW.bdo
             get => base.MessageText;
             set
             {
+                //Check that message text is not empty
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new InputException("The message text cannot be empty.");
                 }
 
+                //Check that MessageText is no longer than 140 characters
                 if (value.Length > 140)
                 {
                     throw new InputException("SMS message text cannot be longer than 140 characters.");
@@ -53,7 +63,15 @@ namespace SET09102_SoftwareEngineering_CW.bdo
 
         private static bool IsPhoneNumber(string number)
         {
-            return Regex.Match(number, @"^\+(?:[0-9]●?){6,14}[0-9]$").Success;
+            try
+            {
+                //Regex to match international phone number, throws exception if no match
+                return Regex.Match(number, @"^\+(?:[0-9]●?){6,14}[0-9]$").Success;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

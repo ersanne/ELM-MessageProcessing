@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SET09102_SoftwareEngineering_CW.exceptions
 {
+    /// <summary>
+    /// Custom exceptions for invalid inputs
+    /// </summary>
     class InputException : Exception
     {
         public InputException()

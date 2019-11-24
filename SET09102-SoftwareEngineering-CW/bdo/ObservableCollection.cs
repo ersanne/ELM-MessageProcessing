@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace SET09102_SoftwareEngineering_CW.bdo
 {
+    /// <summary>
+    /// ObservableCollection sort implementation
+    /// </summary>
     public static class ObservableCollection
     {
         public static void Sort<TSource, TKey>(this ObservableCollection<TSource> source, Func<TSource, TKey> keySelector)

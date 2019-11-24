@@ -7,102 +7,136 @@ using SET09102_SoftwareEngineering_CW.exceptions;
 
 namespace SET09102_SoftwareEngineering_CW.service
 {
+    /// <summary>
+    /// Singleton class to allow processing of messages
+    /// Requires BasicDataProvider
+    /// </summary>
     public class MessageProcessor
     {
         private static MessageProcessor _instance;
         private readonly BasicDataProvider _basicDataProvider;
-
+        
         private MessageProcessor()
         {
             _basicDataProvider = BasicDataProvider.GetInstance();
         }
-
+        
         public static MessageProcessor GetInstance()
         {
             return _instance ?? (_instance = new MessageProcessor());
         }
 
-        public string ProcessMessage(RawMessage rawMessage)
+        /// <summary>
+        /// Process the raw message and return a formatted/indented json.
+        /// This could be more customized but this is enough for the prototype.
+        /// </summary>
+        /// <param name="rawMessage">The input message</param>
+        /// <returns>The parsed message as json</returns>
+        /// <exception cref="InputException">The input was invalid</exception>
+        public string ProcessMessageIndentedJson(RawMessage rawMessage)
         {
-            switch (rawMessage.Header[0])
+            switch (char.ToUpper(rawMessage.Header[0])) //Not clear whether lower case type is allowed
             {
-                case 'S':
-                    return ProcessSmsMessage(rawMessage);
-                case 'E':
-                    return ProcessEmailMessage(rawMessage);
-                case 'T':
-                    return ProcessTweetMessage(rawMessage);
+                case 'S': //SMS
+                    return ProcessSmsMessage(rawMessage).ToIndentedJson();
+                case 'E': //Email
+                    return ProcessEmailMessage(rawMessage).ToIndentedJson();
+                case 'T': //Tweet
+                    return ProcessTweetMessage(rawMessage).ToIndentedJson();
             }
-            throw new InputException("Could not detect message type. Please ensure the message is correctly formatted.");
+            //If message type could not be detected throw exception
+            throw new InputException(
+                "Could not detect message type. Please ensure the message is correctly formatted.");
         }
 
-        private string ProcessSmsMessage(RawMessage message)
+        private SMSMessage ProcessSmsMessage(RawMessage message)
         {
-            ExpandTextspeak(message);
+            //Parse message before transforming text. Verifies any length etc. requirements
             var parsed = new SMSMessage(message);
-            return parsed.ToJson();
+            
+            //Expand textspeak
+            parsed.MessageText = ExpandTextspeak(parsed.MessageText);
+            
+            //Return message
+            return parsed;
         }
 
-        private string ProcessEmailMessage(RawMessage message)
+        private EmailMessage ProcessEmailMessage(RawMessage message)
         {
+            //Parse message before transforming text. Verifies any length etc. requirements
             var parsed = new EmailMessage(message);
+
+            //If message has been detected as SIR add it to the list
             if (parsed.IsSir)
             {
                 _basicDataProvider.SirList.AddIfAbsent(new SirItem(parsed.SportCentreCode, parsed.IncidentType));
             }
-            
+
+            //Quarantine links
             var linkParser = new Regex(
                 @"\b(?:https?://|www\.)\S+\b",
                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
             foreach (Match m in linkParser.Matches(parsed.MessageText))
             {
+                //Add to quarantine list if not in the list already
                 if (!_basicDataProvider.QuarantineList.Contains(m.Value))
                 {
-                    _basicDataProvider.QuarantineList.Add(m.Value);   
+                    _basicDataProvider.QuarantineList.Add(m.Value);
                 }
 
+                //Replace url with <URL Quarantined>
                 parsed.MessageText = parsed.MessageText.Replace(m.Value, "<URL Quarantined>");
             }
-            
-            return parsed.ToJson();
+
+            //Return message
+            return parsed;
         }
 
-        private string ProcessTweetMessage(RawMessage message)
+        private TweetMessage ProcessTweetMessage(RawMessage message)
         {
-            ExpandTextspeak(message);
-            
+            //Parse message before transforming text. Verifies any length etc. requirements
+            var parsed = new TweetMessage(message);
+
+            //Expand textspeak
+            parsed.MessageText = ExpandTextspeak(parsed.MessageText);
+
+            //Add/Increment hashtags to/in trending list
             var hashtags = new HashSet<string>(); //Keep track of hashtags to avoid double counting
             var hashtagRegex = new Regex(@"\#\w+");
-            foreach (Match m in hashtagRegex.Matches(message.MessageBody))
+            foreach (Match m in hashtagRegex.Matches(parsed.MessageText))
             {
+                //Only process if first occurence in tweet
                 if (!hashtags.Contains(m.Value))
                 {
-                    _basicDataProvider.AddOrIncrementTrendingListItem(m.Value);
+                    _basicDataProvider.TrendingList.AddOrIncrement(m.Value);
                     hashtags.Add(m.Value);
                 }
-                
             }
 
+            //Add mention to mention list
             var mentionRegex = new Regex(@"\@\w+");
-            var endOfFirstLine = message.MessageBody.IndexOf("\n", StringComparison.Ordinal)+1; //Exclude the Sender
-            foreach (Match m in mentionRegex.Matches(message.MessageBody.Substring(endOfFirstLine)))
+            foreach (Match m in mentionRegex.Matches(parsed.MessageText))
             {
+                //Ignore if mention already exists in list
                 if (!_basicDataProvider.MentionList.Any(item => item.Equals(m.Value)))
                     _basicDataProvider.MentionList.Add(m.Value);
             }
 
-            return new TweetMessage(message).ToJson();
+            //Return message
+            return parsed;
         }
 
-        private void ExpandTextspeak(RawMessage message)
+        private string ExpandTextspeak(string text)
         {
+            //Loop through textspeak words
             foreach (var word in _basicDataProvider.TextSpeakWords)
             {
-                if (message.MessageBody.Contains(word.Key))
-                {
-                    message.MessageBody = message.MessageBody.Replace(word.Key, $"{word.Key} <{word.Value}>");
-                }
+                //Replace all occurrences of textspeak word
+                text = text.Replace(word.Key, $"{word.Key} <{word.Value}>");
             }
+
+            //Return text with expanded textspeak
+            return text;
         }
     }
 }
