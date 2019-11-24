@@ -6,10 +6,10 @@ namespace SET09102_SoftwareEngineering_CW.bdo
 {
     public class Message
     {
-        [JsonProperty("Id")] private string _id;
+        private string _id;
 
-        [field: JsonProperty("Sender")] public virtual string Sender { get; set; }
-        [field: JsonProperty("MessageText")] public virtual string MessageText { get; set; }
+        [field: JsonProperty("sender")] public virtual string Sender { get; set; }
+        [field: JsonProperty("messageText")] public virtual string MessageText { get; set; }
 
         public Message(RawMessage rawMessage)
         {
@@ -19,10 +19,11 @@ namespace SET09102_SoftwareEngineering_CW.bdo
                     "Message header length is not valid, please make sure your id is correct."); //Invalid length, throw exception
             }
         }
-        
+
+        [JsonProperty("id")]
         public string Id
         {
-            get { return _id; }
+            get => _id;
             set
             {
                 try

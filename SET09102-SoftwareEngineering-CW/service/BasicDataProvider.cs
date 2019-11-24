@@ -30,6 +30,8 @@ namespace SET09102_SoftwareEngineering_CW.service
 
         public SirList SirList { get; set; } = new SirList();
         
+        public ObservableCollection<string> QuarantineList { get; set; } = new ObservableCollection<string>();
+        
         public void AddOrIncrementTrendingListItem(string item)
         {
             if (TrendingList.Any(elem => elem.HashTag.Equals(item)))

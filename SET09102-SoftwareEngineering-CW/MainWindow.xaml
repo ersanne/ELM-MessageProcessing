@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:SET09102_SoftwareEngineering_CW"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
-        Title="MainWindow" Height="552" Width="944">
+        Title="MainWindow" Height="552" Width="1339">
 
-    <Grid HorizontalAlignment="Left" Width="934" Height="419" VerticalAlignment="Top">
+    <Grid HorizontalAlignment="Left" Width="934" Margin="0,0,0,-1">
         <TextBox x:Name="InputTextBody" HorizontalAlignment="Left" Height="160" Margin="23,80,0,0" TextWrapping="Wrap"
                  Text="Body" VerticalAlignment="Top" Width="432" AcceptsTab="True" AcceptsReturn="True" />
         <TextBox x:Name="InputTextHeader" HorizontalAlignment="Left" Height="23" Margin="23,52,0,0" TextWrapping="Wrap"
@@ -18,29 +18,45 @@
                  VerticalAlignment="Top" Width="432" IsReadOnly="True" />
         <Button x:Name="UploadFileBtn" Content="Upload file" HorizontalAlignment="Left" Margin="380,27,0,0"
                 VerticalAlignment="Top" Width="75" RenderTransformOrigin="0,0.25" Click="UploadFileBtn_Click" />
-        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="484" Margin="475,21,0,-86" Stroke="Black"
-                   VerticalAlignment="Top" Width="445" />
-        <ListBox x:Name="TrendingList" HorizontalAlignment="Left" Height="443" Margin="490,52,0,-76"
-                 VerticalAlignment="Top" Width="135">
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="484" Margin="475,21,-386,0" Stroke="Black"
+                   VerticalAlignment="Top" Width="845" />
+        <ListBox x:Name="TrendingList" HorizontalAlignment="Left" Height="443" Margin="490,52,0,0"
+                 VerticalAlignment="Top" Width="200">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock Text="{Binding HashTag}" />
-                        <TextBlock Text="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text=" Tweets" />
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox x:Name="MentionList" HorizontalAlignment="Left" Height="443" Margin="630,52,0,-76"
-                 VerticalAlignment="Top" Width="135" />
-        <ListBox x:Name="SirListBox" HorizontalAlignment="Left" Margin="770,52,0,-76" Width="135" />
+        <ListBox x:Name="MentionList" HorizontalAlignment="Left" Height="443" Margin="695,52,0,0"
+                 VerticalAlignment="Top" Width="200" />
+        <ListBox x:Name="SirList" HorizontalAlignment="Left" Height="443" Margin="900,52,-166,0" VerticalAlignment="Top"
+                 Width="200">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding SportCenterCode}" />
+                        <TextBlock Text=" - " />
+                        <TextBlock Text="{Binding IncidentType}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox x:Name="QuarantineList" HorizontalAlignment="Left" Height="443" Margin="1105,52,-371,0" VerticalAlignment="Top" Width="200" />
         <Label Content="Result" HorizontalAlignment="Left" Margin="23,277,0,0" VerticalAlignment="Top" />
         <Label Content="Trending" HorizontalAlignment="Left" Margin="490,26,0,0" VerticalAlignment="Top" />
-        <Label Content="Mentions" HorizontalAlignment="Left" Margin="630,27,0,0" VerticalAlignment="Top" />
-        <Label Content="SIR" HorizontalAlignment="Left" Margin="770,27,0,0" VerticalAlignment="Top" />
+        <Label Content="Mentions" HorizontalAlignment="Left" Margin="695,26,0,0" VerticalAlignment="Top" />
+        <Label Content="SIR List" Margin="900,26,-76,0" VerticalAlignment="Top" />
         <Button x:Name="SubmitBtn" Content="Submit" HorizontalAlignment="Left" Margin="380,245,0,0"
                 VerticalAlignment="Top" Width="75" Click="SubmitBtn_Click" />
         <Separator HorizontalAlignment="Left" Height="12" Margin="10,265,0,0" VerticalAlignment="Top" Width="455" />
+        <Label x:Name="QuarantineListLabel" Content="Quarantine List" Margin="1105,26,-296,0" VerticalAlignment="Top" />
 
 
     </Grid>

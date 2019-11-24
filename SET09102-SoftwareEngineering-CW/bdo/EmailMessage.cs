@@ -9,34 +9,36 @@ namespace SET09102_SoftwareEngineering_CW.bdo
 {
     public class EmailMessage : Message
     {
-        [JsonProperty("subject")] private string _subject;
-        [JsonProperty("sportCentreCode")] private string _sportCentreCode;
-        [JsonProperty("natureOfIncident")] private string _incidentType;
+        private string _subject;
+        private string _sportCentreCode;
+        private string _incidentType;
 
         public EmailMessage(RawMessage rawMessage) : base(rawMessage)
         {
             var lines = rawMessage.MessageBody.Split(new string[] {Environment.NewLine},
                 StringSplitOptions.RemoveEmptyEntries);
 
-            Sender = lines[0];
-            Subject = lines[1];
+            Sender = lines[0].Trim();
+            Subject = lines[1].Trim();
 
             var i = 3;
-            if (_subject.StartsWith("SIR"))
+            if (IsSir)
             {
-                SportCentreCode = lines[2];
-                IncidentType = lines[3];
+                SportCentreCode = lines[2].Trim();
+                IncidentType = lines[3].Trim();
                 IsSir = true;
                 i = 5;
             }
 
-            this.MessageText = $"{MessageText}{lines[i - 1]}"; //Add first item without space to avoid extra space
+            this.MessageText =
+                $"{MessageText}{lines[i - 1].Trim()}"; //Add first item without space to avoid extra space
             for (; i < lines.Length; i++)
             {
-                this.MessageText = $"{MessageText} {lines[i]}";
+                MessageText = $"{MessageText} {lines[i].Trim()}";
             }
         }
-        
+
+        [JsonProperty("sender")]
         public sealed override string Sender
         {
             get => base.Sender;
@@ -50,7 +52,8 @@ namespace SET09102_SoftwareEngineering_CW.bdo
                 base.Sender = value;
             }
         }
-        
+
+        [JsonProperty("subject")]
         public string Subject
         {
             get => _subject;
@@ -66,10 +69,21 @@ namespace SET09102_SoftwareEngineering_CW.bdo
                     throw new InputException("Subject cannot be longer than 20 characters.");
                 }
 
+                if (value.StartsWith("SIR"))
+                {
+                    if (!IsValidSirSubject(value))
+                    {
+                        throw new InputException("Message detected as SIR but could not validate date in subject.");
+                    }
+
+                    IsSir = true;
+                }
+
                 _subject = value;
             }
         }
 
+        [JsonProperty("messageText")]
         public sealed override string MessageText
         {
             get => base.MessageText;
@@ -84,16 +98,14 @@ namespace SET09102_SoftwareEngineering_CW.bdo
                 {
                     throw new InputException("Email message text cannot be longer than 1028 characters.");
                 }
-
-                var linkParser = new Regex(
-                    @"\b(?:https?://|www\.)\S+\b",
-                    RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                base.MessageText = linkParser.Replace(value, "<URL Quarantined>");
+                
+                base.MessageText = value;
             }
         }
 
-        public bool IsSir { get; set; } = false;
+        [JsonIgnore] public bool IsSir { get; set; } = false;
 
+        [JsonProperty("sportCentreCode")]
         public string SportCentreCode
         {
             get => _sportCentreCode;
@@ -104,9 +116,12 @@ namespace SET09102_SoftwareEngineering_CW.bdo
                     throw new InputException("Sport Centre Code: \"" + value +
                                              "\" is not valid. Please enter a valid code.");
                 }
+
+                _sportCentreCode = value;
             }
         }
 
+        [JsonProperty("natureOfIncident")]
         public string IncidentType
         {
             get => _incidentType;
@@ -142,7 +157,26 @@ namespace SET09102_SoftwareEngineering_CW.bdo
 
         private static bool IsValidSportCentreCode(string code)
         {
-            return Regex.Match(code, @"\d{2}-\d{3}-\w{2}\b").Success;
+            try
+            {
+                return Regex.Match(code, @"\d{2}-\d{3}-\w{2}\b").Success;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool IsValidSirSubject(string subject)
+        {
+            try
+            {
+                return Regex.Match(subject.Substring(4,10), @"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$").Success;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

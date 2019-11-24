@@ -25,6 +25,8 @@ namespace SET09102_SoftwareEngineering_CW
             TrendingList.ItemsSource = basicDataProvider.TrendingList;
             TrendingList.Items.SortDescriptions.Add(new SortDescription("Count", ListSortDirection.Descending));
             MentionList.ItemsSource = basicDataProvider.MentionList;
+            SirList.ItemsSource = basicDataProvider.SirList;
+            QuarantineList.ItemsSource = basicDataProvider.QuarantineList;
         }
 
         private void UploadFileBtn_Click(object sender, RoutedEventArgs e)
@@ -93,10 +95,10 @@ namespace SET09102_SoftwareEngineering_CW
             {
                 MessageBox.Show(except.Message, "Error parsing Input");
             }
-            catch (Exception except)
-            {
-                MessageBox.Show(except.Message, "Error");
-            }
+//            catch (Exception except)
+//            {
+//                MessageBox.Show(except.Message, "Error");
+//            }
             return null;
         }
     }
