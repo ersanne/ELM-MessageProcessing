@@ -41,26 +41,27 @@ namespace SET09102
         [Test]
         public void NoMessageText()
         {
-            var rawMessage = new RawMessage("E123456789", "@test\r\n" +
+            var rawMessage = new RawMessage("E123456789", "test@test.com\r\n" +
                                                           "My Subject\r\n");
             Assert.Throws<InputException>(delegate { new EmailMessage(rawMessage); });
 
-            rawMessage = new RawMessage("E123456789", "@test\r\n" +
+            rawMessage = new RawMessage("E123456789", "test@test.com\r\n" +
                                                       "My Subject\r\n" +
                                                       "");
-            Assert.Throws<InputException>(delegate { new EmailMessage(rawMessage); });
+            var ex = Assert.Throws<InputException>(delegate { new EmailMessage(rawMessage); });
+            Assert.AreEqual(ex.Message, "The message text cannot be empty.");
         }
 
         [Test]
-        [ExpectedException]
         public void MessageTextTooLongTest()
         {
-            var rawMessage = new RawMessage("E123456789", "@test\r\n" +
+            var rawMessage = new RawMessage("E123456789", "test@test.com\r\n" +
                                                           "My Subject\r\n" +
                                                           RandomString(1100));
-            Assert.Throws<InputException>(delegate { new EmailMessage(rawMessage); });
+            var ex = Assert.Throws<InputException>(delegate { new EmailMessage(rawMessage); });
+            Assert.AreEqual(ex.Message, "Email message text cannot be longer than 1028 characters.");
         }
-        
+
         private static string RandomString(int length)
         {
             var random = new Random();

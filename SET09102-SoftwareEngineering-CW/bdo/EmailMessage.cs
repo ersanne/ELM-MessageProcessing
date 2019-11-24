@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using SET09102_SoftwareEngineering_CW.exceptions;
@@ -25,21 +26,16 @@ namespace SET09102_SoftwareEngineering_CW.bdo
             Sender = lines[0].Trim(); //First line should be sender
             Subject = lines[1].Trim(); //Second line should be subject
 
-            var i = 3; //Set line index for concatenating message body lines
+            var i = 2; //Set line index for concatenating message body lines
             if (IsSir) //Subject will set SIR property to true if SIR detected
             {
                 SportCentreCode = lines[2].Trim(); //Third line should be sport centre code
                 IncidentType = lines[3].Trim(); //Fourth lines should be incident type
-                i = 5; //Override line index for concatenating message body lines
+                i = 4; //Override line index for concatenating message body lines
             }
 
             //Add first item without space to avoid extra space
-            this.MessageText = $"{MessageText}{lines[i - 1].Trim()}";
-            //Add remaining items with space
-            for (; i < lines.Length; i++)
-            {
-                MessageText = $"{MessageText} {lines[i].Trim()}";
-            }
+            this.MessageText = string.Join(Environment.NewLine,lines.Skip(i));
         }
 
         [JsonProperty("sender")]
@@ -110,7 +106,7 @@ namespace SET09102_SoftwareEngineering_CW.bdo
                     throw new InputException("Email message text cannot be longer than 1028 characters.");
                 }
 
-                base.MessageText = value;
+                base.MessageText = value.Trim();
             }
         }
 
