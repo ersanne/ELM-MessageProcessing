@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:ELMPrototype"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
-        Title="MainWindow" Height="552" Width="1339">
+        Title="MainWindow" Height="576" Width="1339">
 
-    <Grid HorizontalAlignment="Left" Width="934" Margin="0,0,0,-1">
+    <Grid HorizontalAlignment="Left" Width="1329" Margin="0,0,0,-1.333">
         <TextBox x:Name="InputTextBody" HorizontalAlignment="Left" Height="160" Margin="23,80,0,0" TextWrapping="Wrap"
                  Text="Body" VerticalAlignment="Top" Width="432" AcceptsTab="True" AcceptsReturn="True" />
         <TextBox x:Name="InputTextHeader" HorizontalAlignment="Left" Height="23" Margin="23,52,0,0" TextWrapping="Wrap"
@@ -57,6 +57,8 @@
                 VerticalAlignment="Top" Width="75" Click="SubmitBtn_Click" />
         <Separator HorizontalAlignment="Left" Height="12" Margin="10,265,0,0" VerticalAlignment="Top" Width="455" />
         <Label x:Name="QuarantineListLabel" Content="Quarantine List" Margin="1105,26,-296,0" VerticalAlignment="Top" />
+        <Button x:Name="SaveResultBtn" Content="Save Result" HorizontalAlignment="Left" Margin="380,510,0,0"
+            VerticalAlignment="Top" Width="75" Click="SaveResultBtn_Click" />
 
 
     </Grid>

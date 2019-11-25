@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using ELMPrototype.bdo;
 using ELMPrototype.exceptions;
@@ -87,6 +88,11 @@ namespace ELMPrototype
             ResultBox.Text = ProcessMessage(new RawMessage(InputTextHeader.Text, InputTextBody.Text));
         }
 
+        private void SaveResultBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SaveToOutputFile(ResultBox.Text);
+        }
+
         private static string ProcessMessage(RawMessage message)
         {
             try
@@ -108,10 +114,19 @@ namespace ELMPrototype
             return null;
         }
         
-        private void WriteToFile(string text)
+        private void SaveToOutputFile(string text)
         {
-            //Write to output file
-            System.IO.File.WriteAllText(@"./output.json", text);
+            var outputFilePath = @"./output.json";
+            if (File.Exists(outputFilePath))
+            {
+                //Append text to existing file
+                File.AppendAllText(outputFilePath, Environment.NewLine + text);
+            }
+            else
+            {
+                //Write to output file
+                System.IO.File.WriteAllText(outputFilePath, text);
+            }
         }
     }
 }

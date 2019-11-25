@@ -190,8 +190,8 @@ namespace ELMPrototype.bdo
             {
                 //Check if regex matches subject (checks for dd/mm/yyyy)
                 //If regex doesn't match exception will be thrown
-                return Regex.Match(subject.Substring(4, 10),
-                    @"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{2}$").Success;
+                return Regex.Match(subject.Substring(4, 8),
+                    @"\d{2}\/\d{2}\/\d{2}").Success;
             }
             catch
             {
