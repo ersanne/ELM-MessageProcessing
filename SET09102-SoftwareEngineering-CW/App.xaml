@@ -1,9 +1,0 @@
-﻿<Application x:Class="SET09102_SoftwareEngineering_CW.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:SET09102_SoftwareEngineering_CW"
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>
-         
-    </Application.Resources>
-</Application>
