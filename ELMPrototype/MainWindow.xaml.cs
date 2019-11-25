@@ -1,13 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
-using ELMPrototype.Tests.bdo;
-using ELMPrototype.Tests.exceptions;
-using ELMPrototype.Tests.service;
+using ELMPrototype.bdo;
+using ELMPrototype.exceptions;
+using ELMPrototype.service;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 
-namespace ELMPrototype.Tests
+namespace ELMPrototype
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -106,6 +106,12 @@ namespace ELMPrototype.Tests
             }
             //Should never reach this point but return null if it does.
             return null;
+        }
+        
+        private void WriteToFile(string text)
+        {
+            //Write to output file
+            System.IO.File.WriteAllText(@"./output.json", text);
         }
     }
 }

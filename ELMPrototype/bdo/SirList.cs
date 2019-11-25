@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace ELMPrototype.Tests.bdo
+namespace ELMPrototype.bdo
 {
     /// <summary>
     /// Custom ObservableCollection for SIR items

@@ -4,10 +4,10 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Documents;
-using ELMPrototype.Tests.exceptions;
-using ELMPrototype.Tests.bdo;
+using ELMPrototype.bdo;
+using ELMPrototype.exceptions;
 
-namespace ELMPrototype.Tests.service
+namespace ELMPrototype.service
 {
     /// <summary>
     /// Singleton class to provide various data

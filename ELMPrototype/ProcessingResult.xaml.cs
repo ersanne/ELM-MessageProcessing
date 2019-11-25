@@ -11,9 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ELMPrototype.Tests.bdo;
+using ELMPrototype.bdo;
 
-namespace ELMPrototype.Tests
+namespace ELMPrototype
 {
     /// <summary>
     /// Interaction logic for ProcessingResult.xaml

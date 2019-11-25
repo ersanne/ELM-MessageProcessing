@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ELMPrototype.Tests.bdo;
-using ELMPrototype.Tests.exceptions;
+using ELMPrototype.bdo;
+using ELMPrototype.exceptions;
 
-namespace ELMPrototype.Tests.service
+namespace ELMPrototype.service
 {
     /// <summary>
     /// Singleton class to allow processing of messages

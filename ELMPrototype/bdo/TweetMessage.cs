@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using ELMPrototype.Tests.exceptions;
+using ELMPrototype.exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace ELMPrototype.Tests.bdo
+namespace ELMPrototype.bdo
 {
     /// <summary>
     /// Tweet inherits message and customizes verification

@@ -2,7 +2,7 @@
 using System.IO;
 using NUnit.Framework;
 
-namespace ELMPrototype.Tests
+namespace ELMPrototype
 {
     [SetUpFixture]
     public class Setup

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace ELMPrototype.Tests.bdo
+namespace ELMPrototype.bdo
 {
     /// <summary>
     /// Raw message with Header and MessageBody

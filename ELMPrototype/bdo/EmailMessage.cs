@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ELMPrototype.Tests.exceptions;
+using ELMPrototype.exceptions;
 using Newtonsoft.Json;
 
-namespace ELMPrototype.Tests.bdo
+namespace ELMPrototype.bdo
 {
     /// <summary>
     /// Email inherits message and adds Subject, SportCentreCode and IncidentType
@@ -27,14 +27,14 @@ namespace ELMPrototype.Tests.bdo
             var lines = rawMessage.MessageBody.Split(new string[] {Environment.NewLine},
                 StringSplitOptions.RemoveEmptyEntries);
 
-            Sender = lines[0].Trim(); //First line should be sender
-            Subject = lines[1].Trim(); //Second line should be subject
+            Sender = lines[0]; //First line should be sender
+            Subject = lines[1]; //Second line should be subject
 
             var i = 2; //Set line index for concatenating message body lines
             if (IsSir) //Subject will set SIR property to true if SIR detected
             {
-                SportCentreCode = lines[2].Trim(); //Third line should be sport centre code
-                IncidentType = lines[3].Trim(); //Fourth lines should be incident type
+                SportCentreCode = lines[2]; //Third line should be sport centre code
+                IncidentType = lines[3]; //Fourth lines should be incident type
                 i = 4; //Override line index for concatenating message body lines
             }
 
@@ -48,6 +48,7 @@ namespace ELMPrototype.Tests.bdo
             get => base.Sender;
             set
             {
+                value = value.Trim();
                 //Validate that sender is an email address
                 if (!IsValidEmail(value))
                 {
@@ -64,6 +65,7 @@ namespace ELMPrototype.Tests.bdo
             get => _subject;
             set
             {
+                value = value.Trim();
                 //Check that subject exists
                 if (string.IsNullOrEmpty(value))
                 {
@@ -98,6 +100,7 @@ namespace ELMPrototype.Tests.bdo
             get => base.MessageText;
             set
             {
+                value = value.Trim();
                 //Check that MessageText exists
                 if (string.IsNullOrEmpty(value))
                 {
@@ -123,6 +126,7 @@ namespace ELMPrototype.Tests.bdo
             get => _sportCentreCode;
             set
             {
+                value = value.Substring(19).Trim(); //Get code without "Sport Centre Code: "
                 //Check that SportCentreCode is valid (xx-xxx-xx)
                 if (!IsValidSportCentreCode(value))
                 {
@@ -140,6 +144,7 @@ namespace ELMPrototype.Tests.bdo
             get => _incidentType;
             set
             {
+                value = value.Substring(20).Trim(); //Get incident type without "Nature of Incident: "
                 //List of valid incident types
                 var list = new List<string>
                 {
@@ -170,7 +175,7 @@ namespace ELMPrototype.Tests.bdo
             {
                 //Check if regex matches code (checks for xx-xxx-xx, numeric only)
                 //If regex doesn't match exception will be thrown
-                return Regex.Match(code, @"\d{2}-\d{3}-\w{2}\b").Success;
+                return Regex.Match(code, @"\d{2}-\d{3}-\d{2}\b").Success;
             }
             catch
             {
@@ -186,7 +191,7 @@ namespace ELMPrototype.Tests.bdo
                 //Check if regex matches subject (checks for dd/mm/yyyy)
                 //If regex doesn't match exception will be thrown
                 return Regex.Match(subject.Substring(4, 10),
-                    @"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$").Success;
+                    @"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{2}$").Success;
             }
             catch
             {

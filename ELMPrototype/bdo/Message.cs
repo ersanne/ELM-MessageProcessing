@@ -1,8 +1,8 @@
 ﻿using System;
-using ELMPrototype.Tests.exceptions;
+using ELMPrototype.exceptions;
 using Newtonsoft.Json;
 
-namespace ELMPrototype.Tests.bdo
+namespace ELMPrototype.bdo
 {
     /// <summary>
     /// Base message class, contains Id, Sender and MessageText

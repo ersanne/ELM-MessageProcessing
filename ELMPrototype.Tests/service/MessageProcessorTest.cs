@@ -1,10 +1,10 @@
 ﻿using System;
-using ELMPrototype.Tests.bdo;
-using ELMPrototype.Tests.exceptions;
+using ELMPrototype.bdo;
+using ELMPrototype.exceptions;
 using NUnit.Framework;
 using Newtonsoft.Json;
 
-namespace ELMPrototype.Tests.service
+namespace ELMPrototype.service
 {
     public class MessageProcessorTest
     {

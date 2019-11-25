@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ELMPrototype.Tests.Properties
+namespace ELMPrototype.Properties
 {
 
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using ELMPrototype.Tests.exceptions;
+using ELMPrototype.exceptions;
 using Newtonsoft.Json;
 
-namespace ELMPrototype.Tests.bdo
+namespace ELMPrototype.bdo
 {
     /// <summary>
     /// SMS inherits message and customizes verification

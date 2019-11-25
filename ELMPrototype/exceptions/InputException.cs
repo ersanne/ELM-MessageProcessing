@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ELMPrototype.Tests.exceptions
+namespace ELMPrototype.exceptions
 {
     /// <summary>
     /// Custom exceptions for invalid inputs

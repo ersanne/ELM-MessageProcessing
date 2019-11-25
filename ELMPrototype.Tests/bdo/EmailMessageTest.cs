@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
+using ELMPrototype.bdo;
+using ELMPrototype.exceptions;
 using NUnit.Framework;
-using ELMPrototype.Tests.bdo;
-using ELMPrototype.Tests.exceptions;
 
-namespace ELMPrototype.Tests.Tests
+namespace ELMPrototype.Tests
 {
     [TestFixture]
     public class EmailMessageTest
