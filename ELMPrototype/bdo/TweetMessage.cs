@@ -2,12 +2,11 @@
 using System.Text.RegularExpressions;
 using ELMPrototype.exceptions;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace ELMPrototype.bdo
 {
     /// <summary>
-    /// Tweet inherits message and customizes verification
+    ///     Tweet inherits message and customizes verification
     /// </summary>
     public class TweetMessage : Message
     {
@@ -34,10 +33,7 @@ namespace ELMPrototype.bdo
             set
             {
                 //Check that sender is a valid twitter handle
-                if (!IsValidSender(value))
-                {
-                    throw new InputException("Tweet sender is not valid.");
-                }
+                if (!IsValidSender(value)) throw new InputException("Tweet sender is not valid.");
 
                 base.Sender = value;
             }
@@ -51,16 +47,11 @@ namespace ELMPrototype.bdo
             {
                 {
                     //Check that message text is not empty
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        throw new InputException("The message text cannot be empty.");
-                    }
+                    if (string.IsNullOrEmpty(value)) throw new InputException("The message text cannot be empty.");
 
                     //Check that message text is no longer 140 characters
                     if (value.Length > 140)
-                    {
                         throw new InputException("Tweet message text cannot be longer than 140 characters.");
-                    }
 
                     base.MessageText = value;
                 }

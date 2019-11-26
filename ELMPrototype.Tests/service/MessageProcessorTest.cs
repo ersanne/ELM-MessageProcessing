@@ -1,14 +1,15 @@
 ﻿using System;
 using ELMPrototype.bdo;
 using ELMPrototype.exceptions;
+using ELMPrototype.service;
 using NUnit.Framework;
 using Newtonsoft.Json;
 
-namespace ELMPrototype.service
+namespace ELMPrototype.Tests.service
 {
     public class MessageProcessorTest
     {
-        private MessageProcessor _messageProcessor;
+        private readonly MessageProcessor _messageProcessor;
 
         public MessageProcessorTest()
         {
@@ -63,8 +64,8 @@ namespace ELMPrototype.service
         {
             var rawMessage = new RawMessage("E123456789", "test@test.com" + Environment.NewLine +
                                                           "SIR 24/11/2019" + Environment.NewLine +
-                                                          "66-666-66" + Environment.NewLine +
-                                                          "Theft of Properties" + Environment.NewLine +
+                                                          "Sport Centre Code: 66-666-66" + Environment.NewLine +
+                                                          "Nature of Incident: Theft of Properties" + Environment.NewLine +
                                                           "This is a test http://www.eriksanne.com https://www.eriksanne.com");
 
             var json = _messageProcessor.ProcessMessageIndentedJson(rawMessage);

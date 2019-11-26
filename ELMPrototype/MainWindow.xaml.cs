@@ -1,17 +1,15 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using ELMPrototype.bdo;
 using ELMPrototype.exceptions;
 using ELMPrototype.service;
 using Microsoft.Win32;
-using Newtonsoft.Json;
 
 namespace ELMPrototype
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -34,14 +32,14 @@ namespace ELMPrototype
         private void UploadFileBtn_Click(object sender, RoutedEventArgs e)
         {
             //File dialog to open input file
-            OpenFileDialog fileDialog = new OpenFileDialog();
+            var fileDialog = new OpenFileDialog();
             fileDialog.DefaultExt = ".txt";
             fileDialog.Filter = "Text documents (.txt)|*.txt";
             var result = fileDialog.ShowDialog();
 
             //If file selected, get the file
             if (!result.HasValue || !result.Value) return;
-            var file = new System.IO.StreamReader(fileDialog.FileName);
+            var file = new StreamReader(fileDialog.FileName);
 
             //Variables required
             string line;
@@ -58,20 +56,17 @@ namespace ELMPrototype
                     //Process message and display result in a new window (As there may be multiple messages open one window for each message)
                     resultWindow = new ProcessingResult(ProcessMessage(new RawMessage(header, body)));
                     resultWindow.Show();
-                    
+
                     count = 0; //Reset count to start a new message
                     header = ""; //Reset message header
                     body = ""; //Reset message body
                     continue; //Skip rest of iteration as this message is finished
                 }
+
                 if (count == 0) //New message, first line is the header
-                {
                     header = line;
-                }
                 else //Build message body
-                {
                     body = string.Concat(body, line, Environment.NewLine); //Added NewLine as it is not included in line
-                }
 
                 count++; //Increment count
             }
@@ -110,23 +105,20 @@ namespace ELMPrototype
                 //If Exception thrown open show dialog with error message
                 MessageBox.Show(except.Message, "Error");
             }
+
             //Should never reach this point but return null if it does.
             return null;
         }
-        
-        private void SaveToOutputFile(string text)
+
+        public static void SaveToOutputFile(string text)
         {
             var outputFilePath = @"./output.json";
             if (File.Exists(outputFilePath))
-            {
                 //Append text to existing file
                 File.AppendAllText(outputFilePath, Environment.NewLine + text);
-            }
             else
-            {
                 //Write to output file
-                System.IO.File.WriteAllText(outputFilePath, text);
-            }
+                File.WriteAllText(outputFilePath, text);
         }
     }
 }

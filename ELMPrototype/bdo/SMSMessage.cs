@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace ELMPrototype.bdo
 {
     /// <summary>
-    /// SMS inherits message and customizes verification
+    ///     SMS inherits message and customizes verification
     /// </summary>
     public class SMSMessage : Message
     {
@@ -34,10 +34,8 @@ namespace ELMPrototype.bdo
             {
                 //Verify that sender is a valid international phone number
                 if (!IsPhoneNumber(value))
-                {
                     throw new InputException("Phone number \"" + value +
                                              "\" is not valid. Please enter a correct phone number.");
-                }
 
                 base.Sender = value;
             }
@@ -50,16 +48,11 @@ namespace ELMPrototype.bdo
             set
             {
                 //Check that message text is not empty
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new InputException("The message text cannot be empty.");
-                }
+                if (string.IsNullOrEmpty(value)) throw new InputException("The message text cannot be empty.");
 
                 //Check that MessageText is no longer than 140 characters
                 if (value.Length > 140)
-                {
                     throw new InputException("SMS message text cannot be longer than 140 characters.");
-                }
 
                 base.MessageText = value;
             }

@@ -9,13 +9,13 @@ using Newtonsoft.Json;
 namespace ELMPrototype.bdo
 {
     /// <summary>
-    /// Email inherits message and adds Subject, SportCentreCode and IncidentType
+    ///     Email inherits message and adds Subject, SportCentreCode and IncidentType
     /// </summary>
     public class EmailMessage : Message
     {
-        private string _subject;
-        private string _sportCentreCode;
         private string _incidentType;
+        private string _sportCentreCode;
+        private string _subject;
 
         public EmailMessage()
         {
@@ -24,7 +24,7 @@ namespace ELMPrototype.bdo
         public EmailMessage(RawMessage rawMessage) : base(rawMessage)
         {
             //Split message body into lines
-            var lines = rawMessage.MessageBody.Split(new string[] {Environment.NewLine},
+            var lines = rawMessage.MessageBody.Split(new[] {Environment.NewLine},
                 StringSplitOptions.RemoveEmptyEntries);
 
             Sender = lines[0]; //First line should be sender
@@ -33,13 +33,17 @@ namespace ELMPrototype.bdo
             var i = 2; //Set line index for concatenating message body lines
             if (IsSir) //Subject will set SIR property to true if SIR detected
             {
-                SportCentreCode = lines[2]; //Third line should be sport centre code
-                IncidentType = lines[3]; //Fourth lines should be incident type
+                SportCentreCode =
+                    lines[2].Substring(
+                        19); //Third line should be sport centre code, get code without "Sport Centre Code: "
+                IncidentType =
+                    lines[3].Substring(
+                        20); //Fourth lines should be incident type, get incident type without "Nature of Incident: "
                 i = 4; //Override line index for concatenating message body lines
             }
 
             //Add first item without space to avoid extra space
-            this.MessageText = string.Join(Environment.NewLine, lines.Skip(i));
+            MessageText = string.Join(Environment.NewLine, lines.Skip(i));
         }
 
         [JsonProperty("sender")]
@@ -50,10 +54,7 @@ namespace ELMPrototype.bdo
             {
                 value = value.Trim();
                 //Validate that sender is an email address
-                if (!IsValidEmail(value))
-                {
-                    throw new InputException("Sender must be a valid email address.");
-                }
+                if (!IsValidEmail(value)) throw new InputException("Sender must be a valid email address.");
 
                 base.Sender = value;
             }
@@ -68,24 +69,17 @@ namespace ELMPrototype.bdo
                 value = value.Trim();
                 //Check that subject exists
                 if (string.IsNullOrEmpty(value))
-                {
                     throw new InputException("Could not find subject line, please make sure your email has a subject.");
-                }
 
                 //Check that subject is no more than 20 characters
-                if (value.Length > 20)
-                {
-                    throw new InputException("Subject cannot be longer than 20 characters.");
-                }
+                if (value.Length > 20) throw new InputException("Subject cannot be longer than 20 characters.");
 
                 //Check if message is SIR
                 if (value.StartsWith("SIR"))
                 {
                     //If message is SIR check that subject is valid (i.e. date is correct)
                     if (!IsValidSirSubject(value))
-                    {
                         throw new InputException("Message detected as SIR but could not validate date in subject.");
-                    }
 
                     IsSir = true; //Set IsSir to true
                 }
@@ -102,16 +96,11 @@ namespace ELMPrototype.bdo
             {
                 value = value.Trim();
                 //Check that MessageText exists
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new InputException("The message text cannot be empty.");
-                }
+                if (string.IsNullOrEmpty(value)) throw new InputException("The message text cannot be empty.");
 
                 //Check that MessageText is no more than 1028 characters
                 if (value.Length > 1028)
-                {
                     throw new InputException("Email message text cannot be longer than 1028 characters.");
-                }
 
                 base.MessageText = value.Trim();
             }
@@ -126,13 +115,11 @@ namespace ELMPrototype.bdo
             get => _sportCentreCode;
             set
             {
-                value = value.Substring(19).Trim(); //Get code without "Sport Centre Code: "
+                value = value.Trim();
                 //Check that SportCentreCode is valid (xx-xxx-xx)
                 if (!IsValidSportCentreCode(value))
-                {
                     throw new InputException("Sport Centre Code: \"" + value +
                                              "\" is not valid. Please enter a valid code.");
-                }
 
                 _sportCentreCode = value;
             }
@@ -144,7 +131,7 @@ namespace ELMPrototype.bdo
             get => _incidentType;
             set
             {
-                value = value.Substring(20).Trim(); //Get incident type without "Nature of Incident: "
+                value = value.Trim();
                 //List of valid incident types
                 var list = new List<string>
                 {
@@ -154,10 +141,8 @@ namespace ELMPrototype.bdo
 
                 //If type is not in list throw error
                 if (!list.Contains(value))
-                {
                     throw new InputException("Nature of Incident \"" + value +
                                              "\" is not valid. Please enter a valid type.");
-                }
 
                 _incidentType = value;
             }

@@ -1,10 +1,7 @@
-﻿using System;
-using Newtonsoft.Json;
-
-namespace ELMPrototype.bdo
+﻿namespace ELMPrototype.bdo
 {
     /// <summary>
-    /// Raw message with Header and MessageBody
+    ///     Raw message with Header and MessageBody
     /// </summary>
     public class RawMessage
     {

@@ -1,16 +1,15 @@
-﻿using System;
-using ELMPrototype.exceptions;
+﻿using ELMPrototype.exceptions;
 using Newtonsoft.Json;
 
 namespace ELMPrototype.bdo
 {
     /// <summary>
-    /// Base message class, contains Id, Sender and MessageText
+    ///     Base message class, contains Id, Sender and MessageText
     /// </summary>
     public class Message
     {
         private string _id;
-        
+
         public Message()
         {
         }
@@ -19,10 +18,8 @@ namespace ELMPrototype.bdo
         {
             //Header should be a letter followed by 9 digits thus should not be longer than 10 chars
             if (rawMessage.Header.Length != 10)
-            {
                 throw new InputException(
                     "Message header length is not valid, please make sure your id is correct.");
-            }
 
             Id = rawMessage.Header;
         }

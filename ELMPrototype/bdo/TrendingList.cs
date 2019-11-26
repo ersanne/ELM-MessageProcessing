@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -7,27 +6,19 @@ using System.Linq;
 namespace ELMPrototype.bdo
 {
     /// <summary>
-    /// Custom ObservableCollection for Trending list items
+    ///     Custom ObservableCollection for Trending list items
     /// </summary>
     public class TrendingList : ObservableCollection<TrendingItem>
     {
-        public TrendingList() : base()
-        {
-        }
-        
         //AddOrIncrement method
         public void AddOrIncrement(string item)
         {
             //If item exists in list increment count
             if (this.Any(elem => elem.HashTag.Equals(item)))
-            {
                 this.Single(elem => elem.HashTag.Equals(item)).Count += 1;
-            }
             //If item doesnt exist add item
             else
-            {
-                this.Add(new TrendingItem(item, 1));
-            }
+                Add(new TrendingItem(item, 1));
 
             //Resort list
             this.Sort(o => o.Count);
@@ -37,7 +28,7 @@ namespace ELMPrototype.bdo
     //Custom item for Trending List
     public class TrendingItem : INotifyPropertyChanged
     {
-        private int _count = 0;
+        private int _count;
 
         public TrendingItem(string hashTag, int count)
         {
@@ -45,7 +36,7 @@ namespace ELMPrototype.bdo
             Count = count;
         }
 
-        public string HashTag { get; set; }
+        public string HashTag { get; }
 
         public int Count
         {
@@ -61,6 +52,7 @@ namespace ELMPrototype.bdo
 
         //Event to notify UI
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void OnPropertyChanged(object sender, string propertyName)
         {
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(propertyName));

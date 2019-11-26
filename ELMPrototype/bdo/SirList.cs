@@ -1,38 +1,30 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace ELMPrototype.bdo
 {
     /// <summary>
-    /// Custom ObservableCollection for SIR items
+    ///     Custom ObservableCollection for SIR items
     /// </summary>
     public class SirList : ObservableCollection<SirItem>
     {
-        public SirList() : base()
-        {
-        }
-
         public void AddIfAbsent(SirItem item)
         {
-            if (!this.Contains(item))
-            {
-                this.Add(item);
-            }
+            if (!Contains(item)) Add(item);
         }
     }
 
     /// <summary>
-    /// Custom SIR item for lsit
+    ///     Custom SIR item for lsit
     /// </summary>
     public class SirItem
     {
-        private string SportCenterCode { get; }
-        private string IncidentType { get; }
-
         public SirItem(string sportCenterCode, string incidentType)
         {
             SportCenterCode = sportCenterCode;
             IncidentType = incidentType;
         }
+
+        private string SportCenterCode { get; }
+        private string IncidentType { get; }
     }
 }

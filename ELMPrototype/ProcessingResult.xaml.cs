@@ -1,22 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using ELMPrototype.bdo;
+﻿using System.Windows;
 
 namespace ELMPrototype
 {
     /// <summary>
-    /// Interaction logic for ProcessingResult.xaml
+    ///     Interaction logic for ProcessingResult.xaml
     /// </summary>
     public partial class ProcessingResult : Window
     {
@@ -24,6 +11,12 @@ namespace ELMPrototype
         {
             InitializeComponent();
             ResultTextBox.Text = resultText;
+        }
+
+        private void SaveToFileBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //Save to output.json
+            MainWindow.SaveToOutputFile(ResultTextBox.Text);
         }
     }
 }

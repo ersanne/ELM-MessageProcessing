@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ELMPrototype.bdo;
@@ -8,8 +7,8 @@ using ELMPrototype.exceptions;
 namespace ELMPrototype.service
 {
     /// <summary>
-    /// Singleton class to allow processing of messages
-    /// Requires BasicDataProvider
+    ///     Singleton class to allow processing of messages
+    ///     Requires BasicDataProvider
     /// </summary>
     public class MessageProcessor
     {
@@ -27,8 +26,8 @@ namespace ELMPrototype.service
         }
 
         /// <summary>
-        /// Process the raw message and return a formatted/indented json.
-        /// This could be more customized but this is enough for the prototype.
+        ///     Process the raw message and return a formatted/indented json.
+        ///     This could be more customized but this is enough for the prototype.
         /// </summary>
         /// <param name="rawMessage">The input message</param>
         /// <returns>The parsed message as json</returns>
@@ -69,9 +68,7 @@ namespace ELMPrototype.service
 
             //If message has been detected as SIR add it to the list
             if (parsed.IsSir)
-            {
                 _basicDataProvider.SirList.AddIfAbsent(new SirItem(parsed.SportCentreCode, parsed.IncidentType));
-            }
 
             //Quarantine links | Regex from https://docs.microsoft.com/en-us/previous-versions/msp-n-p/ff650303(v=pandp.10)?redirectedfrom=MSDN#paght000001_commonregularexpressions
             var linkParser = new Regex(
@@ -81,9 +78,7 @@ namespace ELMPrototype.service
             {
                 //Add to quarantine list if not in the list already
                 if (!_basicDataProvider.QuarantineList.Contains(m.Value))
-                {
                     _basicDataProvider.QuarantineList.Add(m.Value);
-                }
 
                 //Replace url with <URL Quarantined>
                 parsed.MessageText = parsed.MessageText.Replace(m.Value, "<URL Quarantined>");
@@ -105,23 +100,19 @@ namespace ELMPrototype.service
             var hashtags = new HashSet<string>(); //Keep track of hashtags to avoid double counting
             var hashtagRegex = new Regex(@"\#\w+");
             foreach (Match m in hashtagRegex.Matches(parsed.MessageText))
-            {
                 //Only process if first occurence in tweet
                 if (!hashtags.Contains(m.Value))
                 {
                     _basicDataProvider.TrendingList.AddOrIncrement(m.Value);
                     hashtags.Add(m.Value);
                 }
-            }
 
             //Add mention to mention list
             var mentionRegex = new Regex(@"\@\w+");
             foreach (Match m in mentionRegex.Matches(parsed.MessageText))
-            {
                 //Ignore if mention already exists in list
                 if (!_basicDataProvider.MentionList.Any(item => item.Equals(m.Value)))
                     _basicDataProvider.MentionList.Add(m.Value);
-            }
 
             //Return message
             return parsed;
@@ -131,10 +122,8 @@ namespace ELMPrototype.service
         {
             //Loop through textspeak words
             foreach (var word in _basicDataProvider.TextSpeakWords)
-            {
                 //Replace all occurrences of textspeak word
                 text = text.Replace(word.Key, $"{word.Key} <{word.Value}>");
-            }
 
             //Return text with expanded textspeak
             return text;

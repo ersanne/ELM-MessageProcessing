@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Windows.Documents;
 using ELMPrototype.bdo;
-using ELMPrototype.exceptions;
 
 namespace ELMPrototype.service
 {
     /// <summary>
-    /// Singleton class to provide various data
-    /// This class contains the textspeak words as well the various lists,
-    /// outside the prototype this should be persisted properly.
+    ///     Singleton class to provide various data
+    ///     This class contains the textspeak words as well the various lists,
+    ///     outside the prototype this should be persisted properly.
     /// </summary>
     public class BasicDataProvider
     {
@@ -22,11 +19,6 @@ namespace ELMPrototype.service
         {
             //Read textspeak file when initialising class 
             ReadTextSpeakFile();
-        }
-
-        public static BasicDataProvider GetInstance()
-        {
-            return _instance ?? (_instance = new BasicDataProvider());
         }
 
         //Dictionary containing textspeak words. <Short, Expanded> i.e. <LOL, Laughing out loud>
@@ -39,34 +31,33 @@ namespace ELMPrototype.service
         public ObservableCollection<string> MentionList { get; } = new ObservableCollection<string>();
 
         //Custom ObservableCollection for SIR items
-        public SirList SirList { get; set; } = new SirList();
+        public SirList SirList { get; } = new SirList();
 
         //ObservableCollection for quarantined urls
-        public ObservableCollection<string> QuarantineList { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> QuarantineList { get; } = new ObservableCollection<string>();
+
+        public static BasicDataProvider GetInstance()
+        {
+            return _instance ?? (_instance = new BasicDataProvider());
+        }
 
         //Read textspeak file
         private void ReadTextSpeakFile()
         {
             TextSpeakWords = new Dictionary<string, string>(); //Create dictionary for textspeak words 
-            
+
             StreamReader reader = null;
             //Try reading file from current directory or project directory
             if (File.Exists(Path.Combine(Environment.CurrentDirectory, @"Data\", "textwords.csv")))
-            {
                 reader = new StreamReader(File.OpenRead(Path.Combine(Environment.CurrentDirectory, @"Data\",
                     "textwords.csv")));
-            }
             else if (File.Exists(@"../../Data/textwords.csv"))
-            {
                 reader = new StreamReader(File.OpenRead(@"../../Data/textwords.csv"));
-            }
 
             //If file not found throw exception
             if (reader == null)
-            {
                 throw new FileNotFoundException(
                     "Could not locate textspeak file. Please ensure it exists in the same directory as the program and is called textwords.csv");
-            }
 
             //Read the file
             while (!reader.EndOfStream)
