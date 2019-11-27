@@ -18,13 +18,13 @@ namespace ELMPrototype.bdo
     /// </summary>
     public class SirItem
     {
-        public SirItem(string sportCenterCode, string incidentType)
+        public SirItem(string sportCentreCode, string incidentType)
         {
-            SportCenterCode = sportCenterCode;
+            SportCentreCode = sportCentreCode;
             IncidentType = incidentType;
         }
 
-        private string SportCenterCode { get; }
-        private string IncidentType { get; }
+        public string SportCentreCode { get; }
+        public string IncidentType { get; }
     }
 }

@@ -23,7 +23,6 @@ namespace ELMPrototype
 
             //Set ItemsSource for ListBoxes
             TrendingList.ItemsSource = basicDataProvider.TrendingList;
-            //TrendingList.Items.SortDescriptions.Add(new SortDescription("Count", ListSortDirection.Descending));
             MentionList.ItemsSource = basicDataProvider.MentionList;
             SirList.ItemsSource = basicDataProvider.SirList;
             QuarantineList.ItemsSource = basicDataProvider.QuarantineList;

@@ -1,0 +1,11 @@
+Running the program:
+The program can be started from visual studio or rider and will detect the textspeak file correctly.
+Alternatively the latest build can be run from Project\ELMPrototype\bin\Debug.
+
+Using the program:
+File input must be .txt and messages must be seperated by "---".
+Messages are formated the same way they would be for standard input.
+A sample input file is a available at Project/sample_input_file.txt
+A sample output file is also available at Project/sample_output.json
+
+When saving the program will always try to create/append to "./output.json".

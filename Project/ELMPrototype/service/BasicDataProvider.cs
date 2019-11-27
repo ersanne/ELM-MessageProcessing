@@ -53,6 +53,8 @@ namespace ELMPrototype.service
                     "textwords.csv")));
             else if (File.Exists(@"../../Data/textwords.csv"))
                 reader = new StreamReader(File.OpenRead(@"../../Data/textwords.csv"));
+            else if (File.Exists(@"./textwords.csv"))
+                reader = new StreamReader(File.OpenRead(@"../../Data/textwords.csv"));
 
             //If file not found throw exception
             if (reader == null)

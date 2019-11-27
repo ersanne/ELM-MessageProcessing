@@ -18,5 +18,10 @@ namespace ELMPrototype
             //Save to output.json
             MainWindow.SaveToOutputFile(ResultTextBox.Text);
         }
+
+        private void CloseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

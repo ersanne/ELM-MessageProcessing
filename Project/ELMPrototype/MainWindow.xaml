@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ELMPrototype"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
-        Title="MainWindow" Height="576" Width="1339">
+        Title="Euston Leisure Messaging" Height="576" Width="1339" ResizeMode="NoResize">
 
     <Grid HorizontalAlignment="Left" Width="1329" Margin="0,0,0,-1.333">
         <TextBox x:Name="InputTextBody" HorizontalAlignment="Left" Height="160" Margin="23,80,0,0" TextWrapping="Wrap"
@@ -42,7 +42,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding SportCenterCode}" />
+                        <TextBlock Text="{Binding SportCentreCode}" />
                         <TextBlock Text=" - " />
                         <TextBlock Text="{Binding IncidentType}" />
                     </StackPanel>
@@ -61,7 +61,5 @@
         <Label x:Name="QuarantineListLabel" Content="Quarantine List" Margin="1105,26,-296,0" VerticalAlignment="Top" />
         <Button x:Name="SaveResultBtn" Content="Save Result" HorizontalAlignment="Left" Margin="380,510,0,0"
                 VerticalAlignment="Top" Width="75" Click="SaveResultBtn_Click" />
-
-
     </Grid>
 </Window>

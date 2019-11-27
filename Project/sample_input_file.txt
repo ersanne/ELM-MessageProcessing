@@ -1,0 +1,20 @@
+S123456789
++4412345678
+This a text LOL
+---
+E123456789
+test@test.com
+Test subject
+Test body http://test.com
+Line 2
+---
+E123456788
+test@test.com
+SIR 27/11/19
+Sport Centre Code: 56-555-33
+Nature of Incident: Raid
+This is the SIR body
+---
+T123456789
+@JohnSmith
+My first #tweet @Twitter

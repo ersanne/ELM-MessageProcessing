@@ -1,0 +1,24 @@
+{
+  "sender": "+4412345678",
+  "messageText": "This a text LOL <Laughing out loud>\r\n",
+  "id": "S123456789"
+}
+{
+  "sender": "test@test.com",
+  "subject": "Test subject",
+  "messageText": "Test body <URL Quarantined>\r\nLine 2",
+  "id": "E123456789"
+}
+{
+  "sender": "test@test.com",
+  "subject": "SIR 27/11/19",
+  "messageText": "This is the SIR body",
+  "sportCentreCode": "56-555-33",
+  "natureOfIncident": "Raid",
+  "id": "E123456788"
+}
+{
+  "sender": "@JohnSmith",
+  "messageText": "My first #tweet @Twitter\r\n",
+  "id": "T123456789"
+}
